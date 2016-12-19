@@ -1,6 +1,5 @@
 import os
 
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -10,19 +9,20 @@ class Config(object):
 
     OAUTH_CREDENTIALS = {
         'google': {
-            'id': '12345',
-            'secret': 'abcdef'
+            'id': os.getenv('OAUTH_GOOGLE_ID'),
+            'secret': os.getenv('OAUTH_GOOGLE_SECRET')
         },
         'facebook': {
-            'id': '23456',
-            'secret': 'bcdefg'
+            'id': os.getenv('OAUTH_FACEBOOK_ID'),
+            'secret': os.getenv('OAUTH_FACEBOOK_SECRET')
         },
         'twitter': {
-            'id': '34567',
-            'secret': 'cdefgh'
+            'id': os.getenv('OAUTH_TWITTER_ID'),
+            'secret': os.getenv('OAUTH_TWITTER_SECRET')
         },
-
     }
+
+    SECRET_KEY = os.urandom(24)
 
 
 class ProductionConfig(Config):
@@ -43,3 +43,4 @@ config = {
     'testing': TestingConfig,
     'default': ProductionConfig,
 }
+
