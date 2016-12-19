@@ -22,7 +22,7 @@ class Config(object):
         },
     }
 
-    SECRET_KEY = os.urandom(24)
+    SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(64))
 
 
 class ProductionConfig(Config):
