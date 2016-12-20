@@ -1,0 +1,4 @@
+flask-script
+flask-login
+flask-rauth
+flask-restful
