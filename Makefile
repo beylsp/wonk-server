@@ -31,7 +31,7 @@ clean-test:
 
 clean-doc:
 	$(MAKE) -C docs clean
-	rm -rf docs/app*.rst
+	rm -rf docs/wonk*.rst
 	rm -rf docs/modules.rst
 
 clean-pyc:
@@ -41,7 +41,7 @@ clean-pyc:
 	find . -name '__pycache__' -exec rm -fr {} +
 
 lint:
-	flake8 -v app
+	flake8 -v wonk
 
 test:
 	nose2 -v
@@ -60,8 +60,8 @@ coverage-html: coverage
 	coverage html
 
 docs:
-	rm -rf docs/app*.rst
+	rm -rf docs/wonk*.rst
 	rm -rf docs/modules.rst
-	sphinx-apidoc -o docs app
+	sphinx-apidoc -o docs wonk
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html

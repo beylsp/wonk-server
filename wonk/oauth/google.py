@@ -2,7 +2,7 @@
 import flask
 import rauth
 
-from app.oauth import OAuthSignIn
+from wonk.oauth import OAuthSignIn
 
 
 class GoogleSignIn(OAuthSignIn):

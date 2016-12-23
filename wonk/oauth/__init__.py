@@ -4,7 +4,7 @@ import os
 import re
 
 from flask import current_app
-from flask import url_for
+from flask_restful import url_for
 
 
 class OAuthSignIn(object):
@@ -17,7 +17,7 @@ class OAuthSignIn(object):
         self.consumer_secret = credentials['secret']
 
     def get_callback_url(self):
-        return url_for('auth.oauth_callback', provider=self.provider_name,
+        return url_for('auth.authcallback', provider=self.provider_name,
                        _external=True)
 
     def authorize(self):
@@ -42,4 +42,4 @@ oauthfiles = filter(pysearchre.search, os.listdir(os.path.dirname(__file__)))
 oauthmods = map(lambda f: '.' + os.path.splitext(f)[0], oauthfiles)
 for mod in oauthmods:
     if not mod.startswith('__'):
-        importlib.import_module(mod, package='app.oauth')
+        importlib.import_module(mod, package='wonk.oauth')
