@@ -20,11 +20,17 @@ manager = Manager(app)
 @manager.command
 def genkey():
     "Generates flask secret key."
-    key = ''.join(random.choice(
-        string.ascii_letters + string.digits + string.punctuation) 
+    keys = []
+    secret = ''.join(random.choice(string.ascii_letters + string.digits)
         for _ in range(64))
-    with open('.env', 'a') as env:
-        env.write('SECRET_KEY=%s' % key)
+    with open('.env') as env:
+        for line in env.readlines():
+            if 'SECRET_KEY' not in line:
+                keys.append(line)
+    with open('.env', 'w') as env:
+        for key in keys:
+            env.write(key)
+        env.write('SECRET_KEY=%s' % secret)
 
 
 if __name__ == '__main__':

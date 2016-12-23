@@ -6,7 +6,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     DEBUG = False
     TESTING = False
-
     OAUTH_CREDENTIALS = {
         'google': {
             'id': os.getenv('OAUTH_GOOGLE_ID'),
@@ -21,7 +20,6 @@ class Config(object):
             'secret': os.getenv('OAUTH_TWITTER_SECRET')
         },
     }
-
     SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(64))
 
 
@@ -43,4 +41,3 @@ config = {
     'testing': TestingConfig,
     'default': ProductionConfig,
 }
-
