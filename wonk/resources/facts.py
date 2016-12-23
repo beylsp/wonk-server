@@ -8,6 +8,7 @@ facts_bp = flask.Blueprint('facts', __name__)
 
 class Fact(rest.Resource):
     def get(self, id):
-        if login.current_user.is_anonymous:
-            return {'message': 'Unauthorized'}
+        access_token = flask.session.get('access_token')
+        if access_token is None:
+            return{'message': 'Not authorized'}
         return {'hello': 'world'}

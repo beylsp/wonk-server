@@ -34,7 +34,7 @@ class TwitterSignIn(OAuthSignIn):
             request_token[0], request_token[1],
             data={'oauth_verifier': flask.request.args['oauth_verifier']}
         )
-        me = oauth_session.get('account/verify_credentials.json').json()
+        me = oauth_session.get('1.1/account/verify_credentials.json').json()
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
         return social_id, username, None  # Twitter does not provide email

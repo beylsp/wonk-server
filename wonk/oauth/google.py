@@ -1,5 +1,6 @@
 """A google authentication service provider that implements OAuth2."""
 import flask
+import json
 import rauth
 
 from wonk.oauth import OAuthSignIn
@@ -11,7 +12,7 @@ class GoogleSignIn(OAuthSignIn):
         self.service = rauth.service.OAuth2Service(
             name='google',
             base_url='https://www.googleapis.com/oauth2/v1/',
-            access_token_url='https://accounts.google.com/o/oauth2/token',
+            access_token_url='https://www.googleapis.com/oauth2/v4/token',
             authorize_url='https://accounts.google.com/o/oauth2/auth',
             client_id=self.consumer_id,
             client_secret=self.consumer_secret,
@@ -28,13 +29,27 @@ class GoogleSignIn(OAuthSignIn):
         if 'code' not in flask.request.args:
             return None, None, None
         oauth_session = self.service.get_auth_session(
+                decoder=self._parse,
                 data={'code': flask.request.args['code'],
-                      'grant_type': 'authorization code',
-                      'redirect_url': self.get_callback_url()}
+                      'grant_type': 'authorization_code',
+                      'redirect_uri': self.get_callback_url()}
         )
-        me = oauth_session.get('me').json()
-        return (
-            'google$' + me['id'],
-            me.get('username'),
-            me.get('email')
-        )
+        userinfo = oauth_session.get('userinfo').json()
+        social_id = userinfo.get('id')
+        username = userinfo.get('name')
+        return social_id, username, None  # Google does not provide email
+
+    def _parse(self, s):
+        d = dict(json.loads(s))
+
+        for k, v in d.items():
+            if not isinstance(k, bytes) and not isinstance(v, bytes):
+                # skip this iteration if we have no keys or values to update
+                continue
+            d.pop(k)
+            if isinstance(k, bytes):
+                k = k.decode('utf-8')
+            if isinstance(v, bytes):
+                v = v.decode('utf-8')
+            d[k] = v
+        return d
