@@ -1,4 +1,4 @@
-"""Blueprint module associated with authentication view functions."""
+"""Blueprint module associated with authentication REST resources."""
 import flask
 import flask_login as login
 import flask_restful as rest
