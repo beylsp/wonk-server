@@ -1,8 +1,10 @@
 """Blueprint module associated with facts REST resources."""
+import wonk.err as err
 import flask
 import flask_restful as rest
 import functools
 import wonk.oauth as oauth
+
 
 from flask_restful import reqparse
 
@@ -24,7 +26,7 @@ def authorize(func):
     def wrapper(*args, **kwargs):
         qs = parser.parse_args()
         if not oauth.OAuthSignIn.authorized(qs.token, qs.user):
-            flask.abort(401, 'Not authorized')
+            raise err.NotAuthorizedError
         return func(**kwargs)
     return wrapper
 
@@ -40,4 +42,7 @@ class Fact(FactResource):
 
 class FactList(FactResource):
     def get(self):
+        modified = flask.request.headers.get('If-Modified-Since')
+        if not modified:
+            raise err.NotModifiedError
         return {'hello': 'list'}
