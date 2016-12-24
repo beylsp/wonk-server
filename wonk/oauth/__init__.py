@@ -35,6 +35,15 @@ class OAuthSignIn(object):
                 cls.providers[provider.provider_name] = provider
         return cls.providers[provider_name]
 
+    @classmethod
+    def authorized(cls, access_token, user_id):
+        try:
+            provider, user = user_id.split('$')
+            si = cls.get_provider(provider)
+            return si.authorized(access_token, user)
+        except (ValueError, KeyError):
+            return False
+
 
 # now import all OAuth implementations
 pysearchre = re.compile('.py$', re.IGNORECASE)

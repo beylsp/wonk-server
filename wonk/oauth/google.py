@@ -2,7 +2,9 @@
 import flask
 import json
 import rauth
+import requests
 
+from rauth.compat import urljoin
 from wonk.oauth import OAuthSignIn
 
 
@@ -25,6 +27,14 @@ class GoogleSignIn(OAuthSignIn):
             redirect_uri=self.get_callback_url())
         )
 
+    def authorized(self, access_token, user):
+        session = self.service.session_obj(access_token=access_token)
+        url = urljoin(self.service.base_url, 'userinfo')
+        r = session.get(url, params={'access_token': access_token})
+        if not r.status_code == requests.codes.ok:
+            return False
+        return r.json().get('id') == user
+
     def callback(self):
         if 'code' not in flask.request.args:
             return None, None, None
@@ -35,7 +45,7 @@ class GoogleSignIn(OAuthSignIn):
                       'redirect_uri': self.get_callback_url()}
         )
         userinfo = oauth_session.get('userinfo').json()
-        social_id = userinfo.get('id')
+        social_id = 'google$' + str(userinfo.get('id'))
         username = userinfo.get('name')
         return social_id, username, None  # Google does not provide email
 

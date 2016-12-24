@@ -24,7 +24,8 @@ def create_app(config_name):
 
     # facts REST api routes
     api = rest.Api(facts.facts_bp)
-    api.add_resource(facts.Fact, '/facts/<int:id>')
+    api.add_resource(facts.Fact, '/r/<int:id>')
+    api.add_resource(facts.FactList, '/r')
     app.register_blueprint(facts.facts_bp)
 
     # auth REST api routes
