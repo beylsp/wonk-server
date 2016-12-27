@@ -1,5 +1,6 @@
-from flask import jsonify
+"""Custom HTTP exceptions."""
 from werkzeug.exceptions import HTTPException
+
 
 class NotModifiedError(HTTPException):
     code = 304

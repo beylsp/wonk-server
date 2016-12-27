@@ -1,13 +1,13 @@
-"""Blueprint module associated with authentication REST resources."""
+"""Blueprint module associated with oauth REST resources."""
 import flask
 import flask_login as login
 import flask_restful as rest
 import wonk.oauth as oauth
 
-auth_bp = flask.Blueprint('auth', __name__)
+oauth_bp = flask.Blueprint('oauth', __name__)
 
 
-class AuthProvider(rest.Resource):
+class OAuthProvider(rest.Resource):
     def get(self, provider):
         if not login.current_user.is_anonymous:
             print('Already signed in.')
@@ -15,7 +15,7 @@ class AuthProvider(rest.Resource):
         return si.authorize()
 
 
-class AuthCallback(rest.Resource):
+class OAuthCallback(rest.Resource):
     def get(self, provider):
         if not login.current_user.is_anonymous:
             print('Already signed in.')

@@ -1,8 +1,10 @@
 """The application module, containing the application factory function."""
-import flask
-import flask_restful as rest
-import resources.auth as auth
-import resources.facts as facts
+from flask import Flask
+from flask_restful import Api
+from resources import facts
+from resources import oauth
+from resources import token
+
 import settings
 
 
@@ -16,22 +18,27 @@ def create_app(config_name):
     Returns:
       The application object.
     """
-    app = flask.Flask(__name__)
+    app = Flask(__name__)
     app.config.from_object(settings.config[config_name])
 
     from wonk.login import login
     login.init_app(app)
 
     # facts REST api routes
-    api = rest.Api(facts.facts_bp)
-    api.add_resource(facts.Fact, '/r/<int:id>')
-    api.add_resource(facts.FactList, '/r')
+    api = Api(facts.facts_bp)
+    api.add_resource(facts.Fact, '/r/<int:id>/')
+    api.add_resource(facts.FactList, '/r/')
     app.register_blueprint(facts.facts_bp)
 
-    # auth REST api routes
-    api = rest.Api(auth.auth_bp)
-    api.add_resource(auth.AuthProvider, '/authorize/<string:provider>')
-    api.add_resource(auth.AuthCallback, '/callback/<string:provider>')
-    app.register_blueprint(auth.auth_bp)
+    # oauth REST api routes
+    api = Api(oauth.oauth_bp)
+    api.add_resource(oauth.OAuthProvider, '/oauth/<string:provider>/')
+    api.add_resource(oauth.OAuthCallback, '/oauthcb/<string:provider>/')
+    app.register_blueprint(oauth.oauth_bp)
+
+    # token REST api routes
+    api = Api(token.token_bp)
+    api.add_resource(token.TokenProvider, '/token/')
+    app.register_blueprint(token.token_bp)
 
     return app

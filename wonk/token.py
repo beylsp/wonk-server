@@ -1,0 +1,19 @@
+"""JSON Web Signature functions."""
+from flask import current_app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import BadSignature
+from itsdangerous import SignatureExpired
+
+
+def generate(data, expires_in=60):
+    s = Serializer(current_app.config['SECRET_KEY'], expires_in=expires_in)
+    return s.dumps(data)
+
+
+def verify(token):
+    s = Serializer(current_app.config['SECRET_KEY'])
+    try:
+        data = s.loads(token)
+    except (BadSignature, SignatureExpired):
+        return None
+    return data
