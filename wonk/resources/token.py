@@ -4,7 +4,7 @@ from flask import jsonify
 from flask_restful import Resource
 from flask_restful import reqparse
 from wonk import err
-from wonk import token
+from wonk import jws
 from wonk.oauth import OAuthSignIn
 
 token_bp = Blueprint('token', __name__)
@@ -31,7 +31,7 @@ class TokenProvider(Resource):
         if not OAuthSignIn.authorized(args.provider, args.token, args.user):
             raise err.NotAuthorizedError
 
-        _token = token.generate(data={'user': args.user})
-        if not _token:
+        token = jws.generate_token(data={'user': args.user})
+        if not token:
             raise err.NotAuthorizedError
-        return jsonify({'token': _token.decode('ascii')})
+        return jsonify({'token': token.decode('ascii')})
