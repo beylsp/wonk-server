@@ -1,4 +1,4 @@
--r requirements.txt
+-rrequirements.txt
 coverage==4.3.1
 fake-factory==0.2
 funcsigs==1.0.2
