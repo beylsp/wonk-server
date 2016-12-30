@@ -8,7 +8,7 @@ from wonk import create_app
 from wonk import jws
 
 
-class TestToken(unittest.TestCase):
+class TestJWS(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = create_app('testing')
