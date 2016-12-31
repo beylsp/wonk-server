@@ -1,9 +1,9 @@
 """The application module, containing the application factory function."""
 from flask import Flask
 from flask_restful import Api
-from resources import facts
-from resources import oauth
-from resources import token
+from wonk.resources import facts
+from wonk.resources import oauth
+from wonk.resources import token
 
 import settings
 
