@@ -19,3 +19,12 @@ def verify_token(token):
     except (BadSignature, SignatureExpired):
         return None
     return data
+
+
+def is_valid_token(token, for_user):
+    data = verify_token(token)
+    if not data or 'user' not in data:
+        return False
+    if data.get('user') != for_user:
+        return False
+    return True

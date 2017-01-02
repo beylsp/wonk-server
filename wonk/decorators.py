@@ -4,7 +4,7 @@ from wonk import err
 from wonk import jws
 
 
-def _parse_args():
+def _parse_req_args():
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument(
         'Authentication-Token', location='headers',
@@ -14,20 +14,18 @@ def _parse_args():
         'User-Id', location='headers',
         required=True, dest='user',
     )
-    return parser.parse_args()
+    return parser.parse_args(strict=True)
 
 
-def _raise_if_invalid_token(args):
-    data = jws.verify_token(args.token)
-    if not data or 'user' not in data:
-        raise err.NotAuthorizedError
-    if data.get('user') != args.user:
+def _raise_if_invalid_token(token, user):
+    if not jws.is_valid_token(token, user):
         raise err.NotAuthorizedError
 
 
 def token_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        _raise_if_invalid_token(_parse_args())
+        g = _parse_req_args()
+        _raise_if_invalid_token(g.token, g.user)
         return func(**kwargs)
     return wrapper
