@@ -2,7 +2,7 @@
 from flask import Flask
 from flask_restful import Api
 from wonk.resources import facts
-from wonk.resources import oauth
+from wonk.resources import auth
 from wonk.resources import token
 
 import settings
@@ -34,10 +34,10 @@ def create_app(config_name):
     app.register_blueprint(facts.facts_bp)
 
     # oauth REST api routes
-    api = Api(oauth.oauth_bp)
-    api.add_resource(oauth.OAuthProvider, '/oauth/<string:provider>/')
-    api.add_resource(oauth.OAuthCallback, '/oauthcb/<string:provider>/')
-    app.register_blueprint(oauth.oauth_bp)
+    api = Api(auth.oauth_bp)
+    api.add_resource(auth.OAuthProvider, '/oauth/<string:provider>/')
+    api.add_resource(auth.OAuthCallback, '/oauthcb/<string:provider>/')
+    app.register_blueprint(auth.oauth_bp)
 
     # token REST api routes
     api = Api(token.token_bp)

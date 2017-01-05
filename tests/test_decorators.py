@@ -59,22 +59,20 @@ class TestDecorators(TestCase):
             d = decorators._parse_req_args()
             self.assertEquals(d.token, token)
 
-    def test_raise_if_invalid_token(self):
-        def is_valid_token_mock(*args, **kwargs):
-            return False
+    @mock.patch('wonk.jws.is_valid_token')
+    def test_raise_if_invalid_token(self, func_mock):
+        func_mock.return_value = False
         with app.app_context():
-            with mock.patch('wonk.jws.is_valid_token', is_valid_token_mock):
-                self.assertRaises(err.NotAuthorizedError, 
-                    decorators._raise_if_invalid_token, fakedata.randstr(),
-                    fakedata.randstr())
+            self.assertRaises(err.NotAuthorizedError, 
+                decorators._raise_if_invalid_token, fakedata.randstr(),
+                fakedata.randstr())
 
-    def test_raise_if_invalid_token(self):
-        def is_valid_token_mock(*args, **kwargs):
-            return True
+    @mock.patch('wonk.jws.is_valid_token')
+    def test_not_raise_if_invalid_token(self, func_mock):
+        func_mock.return_value = True
         with app.app_context():
-            with mock.patch('wonk.jws.is_valid_token', is_valid_token_mock):
-                try:
-                    decorators._raise_if_invalid_token(
-                        fakedata.randstr(), fakedata.randstr())
-                except err.NotAuthorizedError:
-                    self.fail('_raise_if_invalid_token() raised unexpected NotAuthorizedError')
+            try:
+                decorators._raise_if_invalid_token(
+                    fakedata.randstr(), fakedata.randstr())
+            except err.NotAuthorizedError:
+                self.fail('_raise_if_invalid_token() raised unexpected NotAuthorizedError')
