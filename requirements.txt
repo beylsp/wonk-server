@@ -17,3 +17,4 @@ redis==2.10.5
 requests==2.12.4
 six==1.10.0
 wsgiref==0.1.2
+gunicorn==19.6.0
