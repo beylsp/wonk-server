@@ -1,8 +1,12 @@
 language: python
 env:
-    - TOXENV=flake8
-    - TOXENV=py27
+  TOXENV=flake8
+  TOXENV=py27
 install:
-    - pip install tox
+  pip install tox
 script:
-    - tox -e $TOXENV
+  tox -e $TOXENV
+deploy:
+  provider: heroku
+  api_key:
+    secure: tbtJVPYAx4R7UIfu92Vfs/NrkaHrDrdEmGQ+M8qjAmkNfE93gubIY19Eh9P8RPPbUEi8CoRc7g/qG0gSRt8e+Qj3nVvS1dgwvyjSOoPh5B0uT+kjwBXxfPTHaEZJ09mEn/A9zYD12g1Z7LObOdGrIxnW9QdQS9XU0u2lqZd/r7r4EyaBKNsu0uVtecIeVwzVmUa7hZ5baJe8564RkpGqnif17btBMlqRbGuNuk97UnGVWbV5A47kL7vtJWleNwrQlt958azm2ruB+A/2DvZx5y39yrCtFfuOxNxTs8ideuIWtScxbqgULjfychiB16IkNZwb/krjh1X3Qogg2jHmZk+cg4Niu/IXqMlZOgONu2t/IOWNaAb5QgHRjJuPvSwB6ZBNvjq7Ifx45W3uO4Vv4HB81H0kmx6HVIIsbHb/PsnBM7FMpmTnEEabkYMCF1u3hXt2gss1ilp/vY1V8+qY0/WZttR9I/EoXmtitRi5Y0K+3kohcwCf+WBvXoVkb3aAZ3kQxHb71bxpYN8Hr+kZkahQdNcQVgKGKEAmyjbAmIJ3EAUuGVn/p2hs5WG9OYVSQDq6h9BNIuCSzNlDq5wILA8n3t1QRemXoyN5P9GSVh0kkOcYTf1LAZdW65JqZs6heYc9hop98hxgLQRsSpBF2jfepLm/+J+1kvkvUlzwqjQ=
