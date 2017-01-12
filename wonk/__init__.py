@@ -24,8 +24,9 @@ def create_app(config_name):
     from wonk.login import login
     login.init_app(app)
 
-    from wonk.db import db
-    db.init_app(app)
+    from wonk import db
+    _db = db.create_db(app)
+    _db.init_app(app)
 
     # facts REST api routes
     api = Api(facts.facts_bp)

@@ -21,11 +21,10 @@ class Config(object):
         },
     }
     SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(64))
-    REDIS_URL = 'redis://localhost:6379/0'
 
 
 class ProductionConfig(Config):
-    pass
+    REDIS_URL = 'redis://localhost:6379/0'
 
 
 class DevelopmentConfig(Config):
