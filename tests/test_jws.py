@@ -1,9 +1,7 @@
 from __future__ import absolute_import
 import fakedata
 import mock
-import time
 import sys
-import unittest
 
 from . import app
 from flask_testing import TestCase
