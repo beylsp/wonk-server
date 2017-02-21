@@ -28,6 +28,7 @@ clean-test:
 	rm -f .coverage
 	rm -f coverage.xml
 	rm -fr htmlcov/
+	rm *.html
 
 clean-doc:
 	$(MAKE) -C docs clean
