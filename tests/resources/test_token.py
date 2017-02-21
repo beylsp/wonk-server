@@ -1,17 +1,10 @@
 from __future__ import absolute_import
 import json
 import mock
-import time
-import sys
-import unittest
 
 from .. import app
 from .. import fakedata
-from flask import jsonify
-from flask.testing import FlaskClient
 from flask_testing import TestCase
-from werkzeug.exceptions import BadRequest
-from wonk import jws
 
 
 class TestToken(TestCase):

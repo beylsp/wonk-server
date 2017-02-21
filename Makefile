@@ -45,7 +45,7 @@ lint:
 	flake8 -v wonk
 
 test:
-	nose2 -v
+	nose2 -v -s tests
 
 test-doc:
 	sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
