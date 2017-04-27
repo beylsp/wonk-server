@@ -11,10 +11,28 @@ if os.path.exists('.env'):
             os.environ[var[0]] = var[1]
 
 
-from flask_script import Manager
 from wonk import create_app
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+
+from flask_migrate import Migrate
+from flask_migrate import MigrateCommand
+from wonk.models import db
+migrate = Migrate(app, db)
+
+from flask_script import Manager
 manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+
+
+@manager.command
+def create_db():
+    """Creates the db tables."""
+    db.create_all()
+
+@manager.command
+def drop_db():
+    """Drops the db tables."""
+    db.drop_all()
 
 
 @manager.command

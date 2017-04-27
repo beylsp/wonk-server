@@ -21,23 +21,29 @@ class Config(object):
         },
     }
     SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(64))
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class ProductionConfig(Config):
     REDIS_URL = 'redis://localhost:6379/0'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    dbfile = os.path.join(basedir, '.neural.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % dbfile
 
 
 class TestingConfig(Config):
     TESTING = True
+    dbfile = os.path.join(basedir, '.neural_test.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % dbfile
 
 
 config = {
     'production': ProductionConfig,
     'development': DevelopmentConfig,
     'testing': TestingConfig,
-    'default': ProductionConfig,
+    'default': DevelopmentConfig,
 }

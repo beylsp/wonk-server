@@ -91,3 +91,7 @@ ENV/
 
 # Pycharm files
 .idea/
+
+# sqlite test db
+.*.db
+migrations/
